@@ -1,0 +1,455 @@
+/* Corpo */
+body {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  background-color: #d3d3d3;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 20px;
+}
+
+h1,
+h2 {
+  margin: 1rem;
+  text-align: center;
+  color: #333;
+}
+
+h2 {
+  color: #444;
+}
+
+li {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/* Caixa de pesquisa */
+#search {
+  width: 100%;
+  max-width: 500px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #acacac;
+  margin-bottom: 20px;
+  font-size: 16px;
+  background-color: #fff;
+}
+
+.search-div {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#search:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Lista de resultados */
+#results {
+  list-style-type: none;
+  padding: 0;
+  text-align: center;
+  margin: 0;
+}
+
+#results li {
+  border: 1px solid grey;
+  background-color: #fff;
+  cursor: pointer;
+  margin: 5px 0;
+  display: flex;
+  justify-content: center;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+#results li:hover {
+  background-color: #9cbae7;
+}
+
+/* Lista de Confirmados */
+#confirmados {
+  list-style-type: none;
+  padding: 0;
+  text-align: center;
+  margin: 0;
+}
+
+.confirmados {
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #444;
+}
+
+#confirmados li {
+  border: 1px solid grey;
+  background-color: #c8f7ca;
+  cursor: pointer;
+  margin: 5px 0;
+  display: flex;
+  justify-content: center;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+#confirmados li:hover {
+  background-color: #73db77;
+}
+
+/* Estilo do botão de "Adicionar novo convidado" */
+#addButton {
+  display: block;
+  width: 200px;
+  margin: 20px auto;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+#addButton:hover {
+  background-color: #0056b3;
+}
+
+/* Botão Gerar PDF */
+a button {
+  display: ruby-text;
+  width: 200px;
+  margin: 20px auto;
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+  transition: all 0.3s ease;
+  &:hover {
+    font-weight: bold;
+  }
+}
+
+a button:hover {
+  background-color: #218838;
+}
+
+/* Estilo do botão de confirmação de presença */
+.confirmar {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.confirmar:hover {
+  background-color: #0056b3;
+}
+
+#limpar-confirmados {
+  border: none;
+  padding: 0.5rem;
+  color: white;
+  border-radius: 0.2rem;
+  cursor: pointer;
+  background-color: rgb(158, 158, 158);
+  &:hover {
+    background-color: rgb(145, 21, 21);
+  }
+}
+
+.ordem {
+  flex: 1;
+  margin-left: 1rem;
+  font-size: larger;
+  text-align: left;
+  font-weight: bold;
+  color: #0056b3;
+}
+
+.nome-funcao {
+  display: flex;
+  flex-direction: column;
+  flex: 3;
+  text-align: center;
+}
+
+.controles {
+  flex: 2;
+  text-align: right;
+}
+
+.controles button {
+  margin-left: 8px;
+  padding: 0.5rem;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.li-container {
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px;
+  flex: 1;
+}
+
+.editar {
+  background-color: #3277c0;
+  &:hover {
+    background-color: #22558b;
+  }
+}
+
+.apagar {
+  background-color: rgb(185, 46, 46);
+  &:hover {
+    background-color: rgb(119, 20, 20);
+  }
+}
+
+.confirmar-presenca {
+  margin-top: 0.5rem;
+  background-color: #218838;
+  &:hover {
+    background-color: #1b742e;
+  }
+}
+
+.novo-container {
+  display: inline-flex;
+  width: 20rem;
+  border: 2px solid #999999;
+  border-radius: 1rem;
+  padding: 1rem;
+  flex-direction: column;
+  text-align: left;
+  justify-content: flex-start;
+}
+
+.novo-novo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+form {
+  display: grid;
+}
+
+form input,
+select,
+button {
+  border-radius: 0.2rem;
+  border: none;
+  padding: 0.4rem;
+  outline: none;
+}
+
+form button {
+  background-color: #0056b3;
+  color: white;
+  cursor: pointer;
+  &:hover {
+    background-color: #00254d;
+  }
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+#addOtherButton {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+#addOtherButton:focus {
+  outline: 2px solid #00254d;
+}
+
+.table-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1080px;
+}
+
+.modal-content {
+}
+
+#editModal {
+  background-color: #d8d8d877;
+  padding: 2rem;
+  width: -webkit-fill-available;
+  height: 100%;
+  border-radius: 1rem;
+  position: fixed;
+  gap: 0.5rem;
+}
+
+#editModal button {
+  padding: 0.4rem;
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
+
+#editModal input {
+  text-align: center;
+  background-color: #d8d8d8;
+  color: rgb(44, 44, 44);
+  outline: #00254d;
+}
+
+.close {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: red;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  margin-left: 20%;
+  margin-right: 20%;
+  border-radius: 10px;
+  text-align: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.modal-buttons {
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+  margin: 5px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+.btn-danger {
+  background-color: red;
+  color: white;
+}
+
+.btn-secondary {
+  background-color: gray;
+  color: white;
+}
+
+.palanque {
+  color: #333;
+  margin-top: 0.5rem;
+  background-color: #ff8800;
+  &:hover {
+    background-color: #ff6600;
+  }
+}
+
+.adicionar-palanque {
+  color: #333;
+  margin-top: 0.5rem;
+  background-color: #183a6e;
+  &:hover {
+    background-color: #13174e;
+  }
+}
+
+.remover-palanque {
+  color: #333;
+  margin-top: 0.5rem;
+  background-color: #8928a7;
+  &:hover {
+    background-color: #300a4e;
+  }
+}
+
+select {
+  text-align: center;
+}
+
+#editTipo {
+  width: 100%;
+  padding: 8px;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+  background-color: white;
+  color: #333;
+  cursor: pointer;
+}
+
+#tipo {
+  width: 100%;
+  border: 1px solid #007bff00;
+  border-radius: 5px;
+  background-color: white;
+  cursor: pointer;
+}
+
+#tipo:focus {
+  border-color: #007bff;
+}
+
+/* Ícone da seta */
+#editTipo::-ms-expand {
+  background-color: #007bff;
+  display: none;
+}
+
+/* Hover e foco */
+#editTipo:hover {
+  border-color: #0056b3;
+}
+
+#editTipo:focus {
+  outline: none;
+  border-color: #ff9800;
+  box-shadow: 0 0 5px rgba(255, 152, 0, 0.5);
+}

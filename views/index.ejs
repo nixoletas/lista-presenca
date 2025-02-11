@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" sizes="32x32" href="rp.png" />
+    <script src="Sortable.min.js"></script>
+    <script src="canvas-confetti@1.6.0"></script>
+    <title>CONVIDADOS</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="novo-novo">
+      <div class="novo-container">
+        <h2>Novo convidado</h2>
+        <form action="/novo" method="POST">
+          <label for="nome">Nome:</label>
+          <input type="text" id="nome" name="nome" required />
+          <br />
+          <label for="funcao">Função:</label>
+          <input type="text" id="funcao" name="funcao" />
+          <br />
+          <label for="tipo">Tipo:</label>
+          <select id="tipo" name="tipo" required>
+            <option value="OFICIAIS GENERAIS">OFICIAIS GENERAIS</option>
+            <option value="COMANDANTES DE OM">COMANDANTES DE OM</option>
+            <option value="CONVIDADOS MILITARES">CONVIDADOS MILITARES</option>
+            <option value="FORÇAS AUXILIARES">FORÇAS AUXILIARES</option>
+            <option value="CIVIL">CIVIL</option>
+            <option value="OUTROS">OUTROS</option>
+          </select>
+          <br />
+          <button type="submit">Adicionar</button>
+        </form>
+      </div>
+    </div>
+    <h1></h1>
+    <h2>Confirmação de Presença</h2>
+
+    <div class="search-div">
+      <input type="text" id="search" placeholder="Pesquisar um nome" />
+    </div>
+    <div class="center">
+      <button id="addOtherButton" style="display: none">
+        Adicionar em "OUTROS"
+      </button>
+    </div>
+
+    <div class="table-container">
+      <ul id="results">
+        <% let lastTipo = null; dados.filter(row => row.confirmado !==
+        1).forEach(row => { if (row.tipo !== lastTipo) { lastTipo = row.tipo; %>
+        <h2><%= row.tipo %></h2>
+        <% } %>
+        <li data-id="<%= row.ord %>" class="search-item">
+          <div class="li-container">
+            <div class="ordem"><%= row.ordem %></div>
+            <div class="nome-funcao">
+              <strong><%= row.nome %></strong>
+              <%= row.funcao %>
+            </div>
+            <div class="controles">
+              <button
+                class="confirmar-presenca"
+                onclick="confirmarPresenca('<%= row.ord %>')"
+              >
+                Confirmar
+              </button>
+              <button class="editar" onclick="editarRegistro('<%= row.ord %>')">
+                Editar
+              </button>
+              <button class="apagar" onclick="apagarRegistro('<%= row.ord %>')">
+                Apagar
+              </button>
+            </div>
+          </div>
+          <br />
+        </li>
+        <% }); %>
+      </ul>
+
+      <h2 class="confirmados">CONFIRMADOS:</h2>
+      <ul id="confirmados">
+        <% dados.filter(row => row.confirmado === 1).forEach(row => { %>
+        <li data-id="<%= row.ord %>">
+          <div class="li-container">
+            <div class="ordem"><%= row.ordem+1 %></div>
+            <div class="nome-funcao">
+              <strong><%= row.nome %></strong>
+              <%= row.funcao %>
+            </div>
+            <div class="controles">
+              <button
+                class="palanque <%= row.palanque ? 'remover-palanque' : 'adicionar-palanque' %>"
+                onclick="alternarPalanque('<%= row.ord %>')"
+                data-status="<%= row.palanque %>"
+              >
+                <%= row.palanque ? "❌ Palanque" : "➕ Palanque" %>
+              </button>
+              <button
+                class="apagar"
+                onclick="desconfirmarPresenca('<%= row.ord %>')"
+              >
+                desconfirmar
+              </button>
+            </div>
+          </div>
+        </li>
+        <% }); %>
+      </ul>
+    </div>
+
+    <a href="/convidados-confirmados" target="_blank">
+      <button id="gerar-pdf">Gerar PDF</button>
+    </a>
+
+    <div>
+      <button id="limpar-confirmados" onclick="limparConfirmados()">
+        Limpar
+      </button>
+    </div>
+
+    <!-- Modal -->
+    <div id="editModal" class="modal" style="display: none">
+      <div class="modal-content">
+        <span class="close" onclick="fecharModal()">&times;</span>
+        <h2>Editar Registro</h2>
+        <form id="editForm">
+          <label>Nome:</label>
+          <input type="text" id="editNome" required /><br />
+
+          <label>Função:</label>
+          <input type="text" id="editFuncao" /><br />
+
+          <label>Tipo:</label>
+          <select id="editTipo" required>
+            <option value="OFICIAIS GENERAIS">OFICIAIS GENERAIS</option>
+            <option value="COMANDANTES DE OM">COMANDANTES DE OM</option>
+            <option value="CONVIDADOS MILITARES">CONVIDADOS MILITARES</option>
+            <option value="FORÇAS AUXILIARES">FORÇAS AUXILIARES</option>
+            <option value="CIVIL">CIVIL</option>
+            <option value="OUTROS">OUTROS</option>
+          </select>
+          <br />
+
+          <button type="submit">Salvar</button>
+          <button class="apagar" type="button" onclick="fecharModal()">
+            Cancelar
+          </button>
+        </form>
+      </div>
+    </div>
+    <div id="confirmModal" class="modal">
+      <div class="modal-content">
+        <p id="modalMessage">Tem certeza que deseja apagar este registro?</p>
+        <div class="modal-buttons">
+          <button id="confirmDelete" class="btn btn-danger">Apagar</button>
+          <button id="cancelDelete" class="btn btn-secondary">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+      document.getElementById("search").addEventListener("input", function () {
+        const searchValue = this.value.toLowerCase();
+        const items = document.querySelectorAll(".search-item");
+        const addOtherButton = document.getElementById("addOtherButton");
+
+        let matchFound = false; // Flag para verificar se algum item corresponde à pesquisa
+
+        items.forEach((item) => {
+          const nome = item
+            .querySelector(".nome-funcao strong")
+            .textContent.toLowerCase();
+
+          if (nome.includes(searchValue)) {
+            item.style.display = "flex"; // Exibe o item se corresponder à pesquisa
+            matchFound = true; // Define que foi encontrado um item correspondente
+          } else {
+            item.style.display = "none"; // Esconde o item se não corresponder
+          }
+        });
+
+        // Se não encontrar nenhum item correspondente, exibe o botão "Adicionar Outros"
+        if (!matchFound) {
+          addOtherButton.style.display = "flex"; // Exibe o botão
+        } else {
+          addOtherButton.style.display = "none"; // Esconde o botão
+        }
+      });
+
+      document
+        .getElementById("addOtherButton")
+        .addEventListener("click", function () {
+          const nome = document.getElementById("search").value;
+          const tipo = "OUTROS"; // Tipo fixo
+          const funcao = ""; // Função vazia
+
+          if (!nome) return; // Não faz nada se o nome estiver vazio
+
+          // Obter o último ID existente
+          const items = document.querySelectorAll("li[data-id]");
+          let maxId = 0;
+
+          items.forEach((item) => {
+            const itemId = parseInt(item.getAttribute("data-id"));
+            if (!isNaN(itemId) && itemId > maxId) {
+              maxId = itemId;
+            }
+          });
+
+          const novoId = maxId + 1; // Incrementa o ID
+
+          // Enviar ao backend
+          fetch(`/novo`, {
+            method: "POST",
+
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              ord: novoId,
+              nome,
+              funcao,
+              tipo,
+              ordem: novoId,
+            }),
+          }).then(() => location.reload());
+        });
+    </script>
+  </body>
+</html>
