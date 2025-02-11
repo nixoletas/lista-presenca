@@ -28,10 +28,12 @@ node server.js
 
 ### Acessar em: http://localhost
 
-![alt text](demo/image-3.png)
+![confetti](demo/confetti.gif)
 
-![alt text](demo/image-4.png)
+![demo3](demo/image-3.png)
 
-![alt text](demo/image-2.png)
+![demo4](demo/image-4.png)
 
-![alt text](demo/image-5.png)
+![demo2](demo/image-2.png)
+
+![demo5](demo/image-5.png)
